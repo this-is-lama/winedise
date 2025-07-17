@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Редактирование блюда</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" href="/css/menu/add-dish.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <h1>WineDise</h1>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/winedise}">Главная</a>
+        <a th:href="@{/}">Меню</a>
+        <a th:href="@{/order}">Заказ</a>
+        <a th:href="@{/profile}">Профиль</a>
+    </nav>
+</header>
+
+<div class="edit-banner" id="banner-preview">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+        <h1 class="edit-title">Добавление блюда</h1>
+
+    </div>
+</div>
+
+<div class="container">
+    <form class="edit-form" th:method="POST" th:action="@{/rest/{rest_id}/add-dish(rest_id=${rest_id})}" th:object="${dish}">
+        <div class="form-group">
+            <label for="image-url">URL изображения</label>
+            <input type="url" id="image-url" th:field="*{photo}" class="form-control" placeholder="Введите URL изображения для предпросмотра">
+        </div>
+
+        <div class="form-group">
+            <label for="dish-name">Название блюда</label>
+            <input type="text" id="dish-name" class="form-control" th:field="*{name}">
+        </div>
+
+        <div class="form-group">
+            <label for="dish-subtitle">Категория</label>
+            <input type="text" id="dish-subtitle" class="form-control" th:field="*{category}">
+        </div>
+
+        <div class="form-group">
+            <label for="dish-description">Описание</label>
+            <textarea id="dish-description" th:field="*{description}" class="form-control auto-resize"> </textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="dish-composition">Состав блюда</label>
+            <textarea id="dish-composition" th:field="*{ingredients}" class="form-control auto-resize"></textarea>
+            <p class="composition-hint">Указывайте каждый ингредиент через запятую</p>
+        </div>
+
+        <div class="form-group">
+            <label>Пищевая ценность</label>
+            <div class="nutrition-grid">
+                <div class="nutrition-item">
+                    <label for="dish-weight">Вес (г)</label>
+                    <input type="number" th:field="*{weightGrams}" id="dish-weight" class="form-control">
+                </div>
+                <div class="nutrition-item">
+                    <label for="dish-calories">Калории (ккал)</label>
+                    <input type="number" th:field="*{calories}" id="dish-calories" class="form-control">
+                </div>
+                <div class="nutrition-item">
+                    <label for="dish-protein">Белки (г)</label>
+                    <input type="number" th:field="*{proteins}" id="dish-protein" class="form-control">
+                </div>
+                <div class="nutrition-item">
+                    <label for="dish-fat">Жиры (г)</label>
+                    <input type="number" th:field="*{fats}" id="dish-fat" class="form-control">
+                </div>
+                <div class="nutrition-item">
+                    <label for="dish-carbs">Углеводы (г)</label>
+                    <input type="number" th:field="*{carbohydrates}" id="dish-carbs" class="form-control">
+                </div>
+                <div class="nutrition-item">
+                    <label for="dish-time">Время приготовления (мин)</label>
+                    <input type="number" th:field="*{preparationTimeMinutes}" id="dish-time" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dish-price">Цена (₽)</label>
+            <input type="number" th:field="*{price}" min="0"  id="dish-price" class="form-control">
+        </div>
+
+        <div class="action-buttons">
+            <a th:href="@{/winedise/{rest_id}#menu(rest_id=${rest_id})}">
+                <button type="button" class="btn btn-outline">Отменить</button>
+            </a>
+            <a>
+                <button type="submit" class="btn btn-primary">Добавить блюдо</button>
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+    }
+
+    document.querySelectorAll('.auto-resize').forEach(textarea => {
+        autoResizeTextarea(textarea);
+
+        textarea.addEventListener('input', function() {
+            autoResizeTextarea(this);
+        });
+    });
+
+    document.getElementById('image-url').addEventListener('input', function() {
+        const url = this.value.trim();
+        const banner = document.getElementById('banner-preview');
+
+        if (url) {
+            banner.style.backgroundImage = `linear-gradient(rgba(74, 28, 43, 0.4), rgba(74, 28, 43, 0.4)), url('${url}')`;
+
+            const img = new Image();
+            img.onerror = function() {
+                banner.style.backgroundImage = `linear-gradient(rgba(74, 28, 43, 0.4), rgba(74, 28, 43, 0.4)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')`;
+            };
+            img.src = url;
+        } else {
+            banner.style.backgroundImage = `linear-gradient(rgba(74, 28, 43, 0.4), rgba(74, 28, 43, 0.4)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')`;
+        }
+    });
+
+</script>
+</body>
+</html>

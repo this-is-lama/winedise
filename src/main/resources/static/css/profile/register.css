@@ -1,0 +1,167 @@
+:root {
+    --deep-burgundy: #6D2E46;
+    --dark-burgundy: #4A1C2B;
+    --light-burgundy: #A26769;
+    --golden: #D8A47F;
+    --cream: #F7F0F0;
+    --white: #FFFFFF;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cream);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--dark-burgundy);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    box-shadow: 0 10px 30px rgba(109, 46, 70, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.illustration {
+    flex: 1;
+    background-size: cover;
+    background: linear-gradient(rgba(109, 46, 70, 0.7), rgba(109, 46, 70, 0.7)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    color: var(--white);
+}
+
+.illustration h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.illustration p {
+    font-weight: 300;
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 400px;
+}
+
+.register-form {
+    flex: 1;
+    background-color: var(--white);
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--deep-burgundy);
+    margin: 10px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-burgundy);
+}
+
+.form-group input {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--light-burgundy);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(162, 103, 105, 0.2);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.btn {
+    padding: 15px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    background-color: var(--deep-burgundy);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-burgundy);
+    transform: translateY(-2px);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+.form-footer a {
+    color: var(--light-burgundy);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .illustration {
+        padding: 30px 20px;
+    }
+
+    .register-form {
+        padding: 40px 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Авторизация</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile/login.css">
+</head>
+<body>
+<div class="container">
+    <div class="illustration">
+        <h1>Добро пожаловать в WineDise</h1>
+    </div>
+
+    <div class="login-form">
+        <div class="logo">
+            <h2>WineDise</h2>
+            <p>Система бронирования</p>
+        </div>
+
+        <form th:method="POST" th:action="@{/login}" th:object="${user}">
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" th:field="*{email}" name="email" placeholder="Ваш email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" th:field="*{password}" name="password" placeholder="Ваш пароль" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a th:href="@{/register}"><button type="button" class="btn btn-outline">Зарегистрироваться</button></a>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

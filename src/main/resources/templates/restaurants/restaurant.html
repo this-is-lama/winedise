@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Бронирование столов</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/restaurants/restaurant.css">
+</head>
+<body>
+<!-- Шапка -->
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="auth-buttons">
+                <a th:href="@{/winedise}">
+                    <button class="btn btn-outline">
+                        Главная
+                    </button>
+                </a>
+                <a th:href="@{/profile}">
+                <button class="btn btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                    </svg>
+                    Профиль
+                </button>
+                </a>
+                <a th:href="@{/order}">
+                <button class="btn btn-filled cart-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                    Заказ
+                </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Поиск -->
+<div class="search-container">
+    <div class="container">
+        <form id="dishSearchForm" th:action="@{/winedise/{id}/search(id=${restaurant.id})}" th:method="GET">
+            <div class="search-box">
+                <input type="text"
+                       class="search-input"
+                       placeholder="Поиск блюд..."
+                       name="dishSearchQuery"
+                       th:value="${param.dishSearchQuery != null} ? ${param.dishSearchQuery} : ''"
+                       id="dishSearchInput">
+                <button type="submit" class="search-btn">Найти</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Баннер -->
+<div class="container">
+    <div class="banner">
+        <img th:src="${restaurant.photo}" th:alt="${restaurant.name}" class="banner-img">
+        <div class="banner-overlay">
+            <h1 class="banner-title" th:text="${restaurant.name}"></h1>
+        </div>
+    </div>
+</div>
+<!-- О ресторане -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 class="about-title">О ресторане</h2>
+                <p class="about-description" th:text="${restaurant.name + ' - это ' + restaurant.description}"></p>
+            </div>
+            <div class="about-info">
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--gold)" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                    <span th:text="${restaurant.address}"></span>
+                </div>
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--gold)" viewBox="0 0 16 16">
+                        <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                    </svg>
+                    <span th:text="${restaurant.adminPhone}"></span>
+                </div>
+                <div class="info-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--gold)" viewBox="0 0 16 16">
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                        <path d="M8 7a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H5.5a.5.5 0 0 1 0-1h2v-3A.5.5 0 0 1 8 7z"/>
+                    </svg>
+                    <span>Часы работы: </span>
+                    <span th:text="${restaurant.openingTime + ' - ' + restaurant.closingTime}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="menu-section">
+    <div class="container">
+        <h2 class="section-title" id="menu">Наше меню</h2>
+        <div class="menu-item" th:if="${user != null and user.role == 'admin'}">
+            <a th:href="@{/rest/{rest_id}/add-dish(rest_id=${restaurant.id})}" class="add-card">
+                <div class="add-icon">+</div>
+                <div class="add-text">Добавить блюдо</div>
+            </a>
+        </div>
+        <div class="menu-category" th:each="entry : ${menu}">
+            <h3 class="category-title" th:text="${entry.key}">Категория</h3>
+            <div class="menu-grid">
+
+                <div class="menu-item" th:each="dish : ${entry.value}">
+                    <!-- содержимое блюда -->
+                    <div th:if="${user != null and user.role == 'admin'}">
+                        <a th:href="@{/rest/{rest_id}/delete-dish/{id}(rest_id=${restaurant.id}, id=${dish.id})}">
+                            <button class="menu-item-close" title="Удалить из меню"></button>
+                        </a>
+                        <a th:href="@{/rest/{rest_id}/edit-dish/{id}(rest_id=${restaurant.id}, id=${dish.id})}">
+                            <button class="menu-item-edit" title="Редактировать"></button>
+                        </a>
+                    </div>
+
+                    <div class="menu-item-link">
+                        <a th:href="@{/rest/{rest_id}/dish/{id}(id=${dish.id}, rest_id=${restaurant.id})}" class="menu-item-link-content">
+                            <img th:src="${dish.photo}" th:alt="${dish.name}" class="menu-item-img">
+                            <div class="menu-item-content">
+                                <h3 class="menu-item-title" th:text="${dish.name}">Название блюда</h3>
+                                <p class="menu-item-desc" th:text="${dish.description}">Описание</p>
+                                <div class="menu-item-footer">
+                                    <span class="menu-item-price" th:text="${dish.price + '₽'}">Цена</span>
+                                </div>
+                            </div>
+                        </a>
+                        <form th:action="@{/order/rest/{rest_id}/add-dish/{id}/from-menu(rest_id=${restaurant.id}, id=${dish.id})}" method="POST">
+                            <button type="submit" class="add-to-cart">+</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Схема зала -->
+<section class="hall-section">
+    <div class="container">
+        <h2 class="section-title">Схема зала</h2>
+        <img th:src="${restaurant.floorPlan}" alt="Схема зала ресторана" class="hall-map">
+    </div>
+</section>
+
+<!-- Бронирование -->
+<section class="booking-section">
+    <div class="container">
+        <h2 class="section-title">Забронировать стол</h2>
+        <form th:action="@{/winedise/table/{id}(id=${restaurant.id})}" th:method="GET"  class="booking-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date" class="form-label">Дата</label>
+                    <input type="date" id="date" name="date" th:value="${param.date != null} ? ${param.date} : ''"  class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="start" class="form-label">Время</label>
+                    <input type="time" id="start" name="start" th:value="${param.start != null} ? ${param.start} : ''"  class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="end" class="form-label">Время</label>
+                    <input type="time" id="end" name="end" th:value="${param.end != null} ? ${param.end} : ''"  class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests" class="form-label">Количество гостей</label>
+                    <input type="number" id="guests" name="count" th:value="${param.count != null} ? ${param.count} : ''"  class="form-input" min="1" max="20" required>
+                </div>
+            </div>
+        </form>
+        <div class="tables-grid" id="tables">
+        <!-- Карточка добавления нового стола (только для админа) -->
+            <div class="table-card" th:if="${user != null and user.role == 'admin'}">
+                <a th:href="@{/rest/{rest_id}/add-table(rest_id=${restaurant.id})}" class="add-card" style="height: 100%; padding: 20px;">
+                    <div class="add-icon">+</div>
+                    <div class="add-text">Добавить стол</div>
+                </a>
+            </div>
+            <!-- Пример карточки стола -->
+            <div class="table-card" th:each="table : ${tables}">
+                <h3 class="table-name" th:text="${table.name}">Название стола</h3>
+                <p class="table-capacity" th:text="${table.description}">Описание</p>
+                <p class="table-capacity" th:text="${'Вместимость: до ' + table.capacity + ' человек'}">Вместимость:</p>
+                <form th:action="@{/order/rest/{rest_id}/add-table/{id}(rest_id=${restaurant.id}, id=${table.id})}" method="POST">
+                    <input type="hidden" name="date" th:value="${param.date}">
+                    <input type="hidden" name="start" th:value="${param.start}">
+                    <input type="hidden" name="end" th:value="${param.end}">
+                    <input type="hidden" name="count" th:value="${param.count}">
+
+                    <button class="book-table-btn" type="submit">Забронировать</button>
+                </form>
+                <div th:if="${user != null and user.role == 'admin'}">
+                    <a th:href="@{/rest/{rest_id}/delete-table/{id}(rest_id=${restaurant.id}, id=${table.id})}">
+                        <button class="menu-item-close" title="Удалить из меню"></button>
+                    </a>
+                    <a th:href="@{/rest/{rest_id}/edit-table/{id}(rest_id=${restaurant.id}, id=${table.id})}">
+                        <button class="menu-item-edit" title="Редактировать"></button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+
+</footer>
+<script>
+    // Обработчик нажатия Enter в поле поиска блюд
+    document.getElementById('dishSearchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Предотвращаем стандартное поведение
+            document.getElementById('dishSearchForm').submit();
+        }
+    });
+
+</script>
+</body>
+</html>

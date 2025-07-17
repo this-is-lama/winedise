@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${dish.name + ' - WineDise'}">WineDise - Блюдо</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/menu/dish.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <h1>WineDise</h1>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/winedise}">Главная</a>
+        <a th:href="@{/winedise/{rest_id}#menu(rest_id=${rest_id})}">Меню</a>
+        <a th:href="@{/order}">Заказ</a>
+        <a th:href="@{/profile}">Профиль</a>
+    </nav>
+</header>
+
+<div class="dish-banner" th:style="'background-image: url(' + ${dish.photo} + ')'">
+    <h1 class="dish-title" th:text="${dish.name}">Название блюда</h1>
+</div>
+
+<div class="container">
+    <div class="dish-content">
+        <div class="dish-info">
+            <h2 class="section-title">Описание</h2>
+            <p class="dish-description" th:text="${dish.description}"></p>
+
+            <div class="dish-composition">
+                <h2 class="section-title">Состав</h2>
+                <ul class="composition-list">
+                    <li class="composition-item" th:each="ingredient : ${#strings.arraySplit(dish.ingredients, ',')}">
+                        <span th:text="${#strings.trim(ingredient)}">Ингредиент</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dish-details">
+                <h2 class="section-title">Пищевая ценность</h2>
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <p class="detail-label">Вес</p>
+                        <p class="detail-value" th:text="${dish.weightGrams + ' г'}">г</p>
+                    </div>
+                    <div class="detail-card">
+                        <p class="detail-label">Калории</p>
+                        <p class="detail-value" th:text="${dish.calories + ' ккал'}">ккал</p>
+                    </div>
+                    <div class="detail-card">
+                        <p class="detail-label">Белки</p>
+                        <p class="detail-value" th:text="${dish.proteins + ' г'}">г</p>
+                    </div>
+                    <div class="detail-card">
+                        <p class="detail-label">Жиры</p>
+                        <p class="detail-value" th:text="${dish.fats + ' г'}">г</p>
+                    </div>
+                    <div class="detail-card">
+                        <p class="detail-label">Углеводы</p>
+                        <p class="detail-value" th:text="${dish.carbohydrates + ' г'}">г</p>
+                    </div>
+                    <div class="detail-card">
+                        <p class="detail-label">Время приготовления</p>
+                        <p class="detail-value" th:text="${dish.preparationTimeMinutes + ' мин'}">мин</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dish-order">
+            <div class="price-container">
+                <span class="price-label">Цена</span>
+                <p class="price-value" th:text="${dish.price + ' ₽'}">₽</p>
+            </div>
+            <div th:if="${dish.isDeleted == false}">
+                <div class="quantity-control">
+                    <span class="quantity-label">Количество</span>
+                    <div class="quantity-selector">
+                        <form th:action="@{/order/rest/{rest_id}/delete-dish/{id}/from-dish(rest_id=${rest_id}, id=${dish.id})}" th:method="DELETE">
+                            <button class="quantity-btn" id="decrease">-</button>
+                        </form>
+                        <span class="quantity" id="quantity" th:text="${dishes.get(dish) != null} ? ${dishes.get(dish)} : 0">кол-во</span>
+                        <form th:action="@{/order/rest/{rest_id}/add-dish/{id}/from-dish(rest_id=${rest_id}, id=${dish.id})}" th:method="POST">
+                            <button class="quantity-btn" id="increase">+</button>
+                        </form>
+                    </div>
+                </div>
+                <form th:action="@{/order/rest/{rest_id}/add-dish/{id}/from-dish(rest_id=${rest_id}, id=${dish.id})}" th:method="POST">
+                    <button class="btn btn-primary" id="add-to-cart">Добавить в корзину</button>
+                </form>
+                <a th:href="@{/winedise/{rest_id}#tables(rest_id=${rest_id})}">
+                    <button class="btn btn-outline" >Забронировать стол</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

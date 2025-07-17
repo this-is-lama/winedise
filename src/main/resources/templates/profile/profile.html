@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Мой профиль</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile/profile.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="nav-buttons">
+                <a th:href="@{/winedise}" class="nav-btn nav-btn-outline">Главная</a>
+                <a th:href="@{/order}" class="nav-btn nav-btn-outline">Заказ</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="profile-banner">
+    <div class="container">
+        <h1>Мой профиль</h1>
+    </div>
+</section>
+
+<div class="container">
+
+
+    <!-- Основная карточка профиля -->
+    <div class="profile-card">
+        <!-- Левая часть - фото профиля -->
+        <div class="profile-photo-section">
+            <img th:src="${user.photo}" alt="Фото профиля" class="profile-photo">
+        </div>
+
+        <!-- Правая часть - информация профиля -->
+        <div class="profile-info-section">
+            <div class="profile-name">
+                <div class="profile-lastname" th:text="${user.lastName}">Фамилия</div>
+                <div class="profile-firstname" th:text="${user.firstName}">Имя</div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <div class="detail-label">Номер телефона</div>
+                    <div class="detail-value" th:text="${user.phoneNumber}">+7 (123) 456-78-90</div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Почта</div>
+                    <div class="detail-value" th:text="${user.email}">mail@example.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопки администратора -->
+    <div class="admin-buttons" th:if="${user.role == 'admin'}">
+        <a th:href="@{/profile/all}">
+            <button class="admin-btn">Все пользователи</button>
+        </a>
+        <a th:href="@{/order/all}">
+            <button class="admin-btn">Все заказы</button>
+        </a>
+    </div>
+
+    <div class="orders-section" id="orders">
+        <h2 class="section-title">Мои заказы</h2>
+
+        <div class="orders-list" th:if="${not #sets.isEmpty(user.orders)}">
+            <!-- Карточка заказа -->
+            <div class="order-card" th:each="order : ${user.orders}">
+                <div class="order-header">
+                    <div class="order-number" th:text="'Бронирование ' + ${order.id}">Бронирование #номер</div>
+                    <div class="order-date"
+                         th:text="${#temporals.format(order.date, 'dd MMMM yyyy') + ', ' + order.reservationStart}">
+                        15 октября 2023, 19:00
+                    </div>
+                </div>
+
+                <div class="restaurant-info">
+                    <i class="fas fa-utensils"></i>
+                    <span th:text="${order.restaurant.name}">Название ресторана</span>
+                </div>
+
+                <div class="order-content">
+                    <div class="order-details">
+                        <div class="order-detail">
+                            <div class="order-detail-title">Количество гостей</div>
+                            <div class="order-detail-value" th:text="${order.peopleCount}">2</div>
+                        </div>
+
+                        <div class="order-detail">
+                            <div class="order-detail-title">Время</div>
+                            <div class="order-detail-value"
+                                 th:text="${order.reservationStart} + ' - ' + ${order.reservationEnd}">
+                                19:00 - 22:00
+                            </div>
+                        </div>
+
+                        <div class="order-detail" th:if="${order.specialRequests}">
+                            <div class="order-detail-title">Особые пожелания</div>
+                            <div class="order-detail-value" th:text="${order.specialRequests}">Дополнительные пожелания</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-total" th:text="'Общая сумма: ' + ${order.totalAmount} + ' ₽'">
+                    Общая сумма: ₽
+                </div>
+
+                <!-- Добавленная кнопка "Отменить" -->
+                <form th:method="DELETE" th:action="@{/order/delete/{id}(id=${order.id})}">
+                    <button type="submit" class="cancel-btn">Отменить</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="no-orders" th:unless="${not #sets.isEmpty(user.orders)}">
+            <p>У вас пока нет заказов</p>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a th:href="@{/exit}">
+            <button class="btn btn-outline">Выйти из профиля</button>
+        </a>
+        <a th:href="@{/edit-profile}">
+            <button class="btn btn-filled">Редактировать</button>
+        </a>
+    </div>
+</div>
+
+<footer>
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</body>
+</html>

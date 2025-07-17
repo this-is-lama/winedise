@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Регистрация</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile/register.css">
+</head>
+<body>
+<div class="container">
+    <div class="illustration">
+        <h1>Станьте частью WineDise</h1>
+        <p>Зарегистрируйтесь, чтобы бронировать столики, заказывать блюда заранее и получать специальные предложения</p>
+    </div>
+
+    <div class="register-form">
+        <div class="logo">
+            <h2>WineDise</h2>
+            <p>Создание аккаунта</p>
+        </div>
+
+        <form th:method="POST" th:action="@{/register}" th:object="${user}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Имя</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" name="firstName" placeholder="Ваше имя" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Фамилия</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" name="lastName" placeholder="Ваша фамилия" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Номер телефона</label>
+                <input type="tel" id="phone" th:field="*{phoneNumber}" name="phone" placeholder="+7 (___) ___-__-__" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" th:field="*{email}" name="email" placeholder="Ваш email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" th:field="*{password}" name="password" placeholder="Придумайте пароль" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+
+        <div class="form-footer">
+            <p>Уже есть аккаунт? <a th:href="@{/login}">Войдите</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

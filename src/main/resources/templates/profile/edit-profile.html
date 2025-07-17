@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Редактирование профиля</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile/edit-profile.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="nav-buttons">
+                <a th:href="@{/winedise}" class="nav-btn nav-btn-outline">На главную</a>
+                <a th:href="@{/order}" class="nav-btn nav-btn-outline">Корзина</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="edit-banner">
+    <div class="container">
+        <h1>Редактирование профиля</h1>
+    </div>
+</section>
+
+<div class="container">
+    <form class="profile-card" id="profile-form" th:method="PATCH" th:action="@{/edit-profile}" th:object="${user}">
+        <!-- Левая часть - фото профиля -->
+        <div class="profile-photo-section">
+            <img th:src="${user.photo}" alt="Фото профиля" class="profile-photo" id="profileImage">
+            <input type="url" class="photo-url-input" id="imageUrl" th:field="*{photo}" placeholder="Введите URL изображения">
+        </div>
+
+        <!-- Правая часть - информация профиля -->
+        <div class="profile-info-section">
+            <div class="profile-name">
+                <input type="text" class="form-control profile-lastname" th:field="*{lastName}" style="font-family: 'Playfair Display', serif; font-size: 32px; border: none; border-bottom: 1px solid #ddd; padding-left: 0; padding-bottom: 5px;">
+                <input type="text" class="form-control profile-firstname" th:field="*{firstName}" style="font-family: 'Playfair Display', serif; font-size: 28px; border: none; border-bottom: 1px solid #ddd; padding-left: 0; padding-bottom: 5px;">
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <div class="detail-label">Номер телефона</div>
+                    <input type="tel" class="form-control" th:field="*{phoneNumber}">
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Почта</div>
+                    <input type="email" class="form-control" th:field="*{email}">
+                </div>
+
+                <div th:if="${user.role == 'admin'}" class="detail-item">
+                    <div class="detail-label">Роль пользователя</div>
+                    <select class="role-select" th:field="*{role}">
+                        <option value="customer">Покупатель</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-label">Новый пароль</div>
+                    <input type="password" th:field="*{password}" class="form-control" placeholder="Введите новый пароль">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Кнопки действий -->
+    <div class="action-buttons">
+        <button type="submit" form="profile-form" class="btn btn-filled">Сохранить изменения</button>
+        <a th:href="@{/delete-profile}">
+            <button type="button" class="btn btn-danger">Удалить профиль</button>
+        </a>
+    </div>
+</div>
+
+<footer>
+</footer>
+
+<script>
+    // Обновление изображения при изменении URL
+    document.getElementById('imageUrl').addEventListener('input', function() {
+        const url = this.value;
+        if (url) {
+            document.getElementById('profileImage').src = url;
+        } else {
+            document.getElementById('profileImage').src = 'https://i.pinimg.com/736x/c4/70/f1/c470f13a66c0597efa80273230847ea1.jpg';
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Корзина</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/order/order.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <h1>WineDise</h1>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/winedise}"> Главная</a>
+        <a th:href="@{/profile}">Профиль</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1 class="page-title">Ваша корзина</h1>
+
+    <!-- Карточка ресторана -->
+    <a th:href="${rest != null} ? @{/winedise/{id}(id=${rest.id})} : @{/winedise}">
+        <div class="restaurant-card">
+            <div class="restaurant-info">
+                <h2 class="restaurant-name" th:text="${rest != null} ? ${'Ресторан: ' + rest.name} : 'Ресторан: ...'">Название ресторана</h2>
+                <div class="restaurant-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span th:text="${rest != null} ? ${'Адрес: ' + rest.address} : 'Адрес: ...'">Адрес</span>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <div class="cart-section">
+        <div class="cart-items">
+            <div class="dishes-list">
+                <h2 class="section-title">Выбранные блюда</h2>
+
+                <div class="dish-card" th:each="dish : ${dishes.keySet()}">
+                    <form th:action="@{/order/delete-dish/{id}/full(id=${dish.id})}" th:method="DELETE">
+                        <button class="close-btn" title="Удалить из корзины">×</button>
+                    </form>
+                    <img th:src="${dish.photo}" alt="Блюдо" class="dish-image">
+                    <div class="dish-details">
+                        <h3 class="dish-name" th:text="${dish.name}">Название</h3>
+                        <p class="dish-description" th:text="${dish.description}">Описание</p>
+                        <p class="dish-price" th:text="${dish.price + '₽'}">Цена ₽</p>
+                        <div class="quantity-control">
+                            <form th:action="@{/order/delete-dish/{id}/from-order(id=${dish.id})}" th:method="DELETE">
+                                <button class="quantity-btn">-</button>
+                            </form>
+                            <span class="quantity" th:text="${dishes.get(dish)}">кол-во</span>
+                            <form th:action="@{/order/add-dish/{id}/from-order(id=${dish.id})}" th:method="POST">
+                                <button class="quantity-btn">+</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tables-container">
+                <h2 class="section-title">Выбранные столы</h2>
+                <div class="tables-horizontal">
+                    <div class="table-card-horizontal" th:each="table : ${tables}">
+                        <form th:action="@{/order/delete-table/{id}(id=${table.id})}" th:method="DELETE">
+                            <button class="close-btn" title="Отменить бронь стола">×</button>
+                        </form>
+                        <h3 class="table-title" th:text="${table.name}">Название стола</h3>
+                        <div class="table-info">
+                            <p class="table-date" th:text="${order.date}">
+                                <i class="far fa-calendar-alt"></i>
+                                Дата
+                            </p>
+                            <p class="table-time" th:text="${order.reservationStart + ' - ' + order.reservationEnd}">
+                                <i class="far fa-clock"></i>
+                                Время
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="summary-section">
+            <form th:action="@{/order/confirm}" th:method="POST" class="summary-section" id="booking-form">
+                <h2 class="section-title">Детали бронирования</h2>
+                <div class="form-group">
+                    <label for="guests">Количество персон</label>
+                    <input id="guests" th:value="${param.peopleCount}" name="peopleCount" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Дополнительные пожелания</label>
+                    <textarea id="notes" name="specialRequests" th:value="${param.specialRequests}" placeholder="Например: аллергия на морепродукты и т.д."></textarea>
+                </div>
+
+                <div class="total-summary">
+                    <div class="total-row grand-total">
+                        <span>Итого:</span>
+                        <span th:text="${total + ' ₽'}">Цена ₽</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Забронировать</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="success-modal" class="modal" th:if="${success == true}">
+    <div class="modal-content">
+        <i class="fas fa-check-circle modal-icon success-icon"></i>
+        <h2 class="modal-title">Бронирование успешно!</h2>
+        <p class="modal-message">Ваш столик и блюда успешно забронированы!</p>
+        <a th:href="@{/profile}">
+            <button class="modal-btn modal-btn-primary">Перейти в профиль</button>
+        </a>
+    </div>
+</div>
+
+<div id="anti-success-modal" class="modal" th:if="${success == false}">
+    <div class="modal-content">
+        <h2 class="modal-title">Ошибка бронирования!</h2>
+        <p class="modal-message">В заказе обязательно должен присутствовать столик!</p>
+        <a th:href="@{/profile}">
+            <button class="modal-btn modal-btn-primary">Перейти в профиль</button>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

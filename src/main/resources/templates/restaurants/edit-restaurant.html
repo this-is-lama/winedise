@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Редактирование карточки ресторана</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/restaurants/edit-restaurant.css">
+</head>
+<body>
+<!-- Шапка -->
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="auth-buttons">
+                <a th:href="@{/winedise}">
+                    <button class="btn btn-outline">Главная</button>
+                </a>
+                <a th:href="@{/}">
+                    <button class="btn btn-outline">Меню</button>
+                </a>
+                <a th:href="@{/profile}">
+                    <button class="btn btn-outline">Профиль</button>
+                </a>
+                <a th:href="@{/order}">
+                    <button class="btn btn-outline">Заказ</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Основной контент -->
+<section class="edit-card-section">
+    <div class="container">
+        <h2 class="section-title">Редактирование ресторана</h2>
+
+        <div class="edit-form">
+            <form id="restaurantEditForm" th:method="PATCH" th:action="@{/winedise/edit-rest/{id}(id=${rest.id})}" th:object="${rest}">
+                <!-- Основная информация -->
+                <div class="form-group">
+                    <label for="restaurantName" class="form-label">Название ресторана</label>
+                    <input type="text" id="restaurantName" class="form-input" th:field="*{name}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="restaurantDescription" class="form-label">Описание ресторана</label>
+                    <textarea id="restaurantDescription" class="form-input form-textarea" th:field="*{description}" required></textarea>
+                </div>
+
+
+                <!-- Изображения -->
+                <div class="image-section">
+                    <h3 class="image-section-title">Фото ресторана</h3>
+
+                    <div class="image-input-group">
+                        <label for="restaurantImageUrl" class="form-label">Ссылка на фото ресторана</label>
+                        <input type="url" id="restaurantImageUrl" class="form-input" th:field="*{photo}" placeholder="https://example.com/photo.jpg">
+                    </div>
+
+                    <img id="restaurantImagePreview" th:src="${rest.photo}" alt="Фото ресторана" class="image-preview" onerror="this.style.display='none'">
+                </div>
+
+                <div class="image-section">
+                    <h3 class="image-section-title">Схема зала</h3>
+
+                    <div class="image-input-group">
+                        <label for="hallSchemeUrl" class="form-label">Ссылка на схему зала</label>
+                        <input type="url" id="hallSchemeUrl" class="form-input" th:field="*{floorPlan}" placeholder="https://example.com/scheme.jpg">
+                    </div>
+
+                    <img id="hallSchemePreview" th:src="${rest.floorPlan}" alt="Схема зала" class="image-preview" onerror="this.style.display='none'">
+                </div>
+
+                <!-- Контактная информация -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="restaurantAddress" class="form-label">Адрес</label>
+                        <input type="text" id="restaurantAddress" class="form-input" th:field="*{address}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="restaurantPhone" class="form-label">Телефон</label>
+                        <input type="tel" id="restaurantPhone" class="form-input" th:field="*{adminPhone}" required>
+                    </div>
+                </div>
+
+                <!-- Время работы -->
+                <div class="form-group">
+                    <label class="form-label">Время работы</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="openingTime" class="form-label">Открытие</label>
+                            <input type="time" id="openingTime" class="form-input" th:field="*{openingTime}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="closingTime" class="form-label">Закрытие</label>
+                            <input type="time" id="closingTime" class="form-input" th:field="*{closingTime}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="form-actions">
+                    <a th:href="@{/winedise#rests}">
+                        <button type="button" class="btn btn-cancel">Отменить</button>
+                    </a>
+                    <a>
+                        <button type="submit" class="btn btn-filled">Сохранить изменения</button>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Обновление предпросмотра изображений при изменении URL
+    document.getElementById('restaurantImageUrl').addEventListener('input', function() {
+        const url = this.value.trim();
+        const preview = document.getElementById('restaurantImagePreview');
+
+        if (url) {
+            preview.src = url;
+            preview.classList.add('visible');
+        } else {
+            preview.classList.remove('visible');
+        }
+    });
+
+    document.getElementById('hallSchemeUrl').addEventListener('input', function() {
+        const url = this.value.trim();
+        const preview = document.getElementById('hallSchemePreview');
+
+        if (url) {
+            preview.src = url;
+            preview.classList.add('visible');
+        } else {
+            preview.classList.remove('visible');
+        }
+    });
+
+    // Инициализация предпросмотра при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        const restaurantImageUrl = document.getElementById('restaurantImageUrl').value;
+        const hallSchemeUrl = document.getElementById('hallSchemeUrl').value;
+
+        if (restaurantImageUrl) {
+            document.getElementById('restaurantImagePreview').classList.add('visible');
+        }
+
+        if (hallSchemeUrl) {
+            document.getElementById('hallSchemePreview').classList.add('visible');
+        }
+    });
+
+</script>
+</body>
+</html>

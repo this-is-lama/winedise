@@ -1,0 +1,460 @@
+:root {
+    --deep-burgundy: #6D2E46;
+    --dark-burgundy: #4A1C2B;
+    --light-burgundy: #A26769;
+    --golden: #D8A47F;
+    --cream: #F7F0F0;
+    --white: #FFFFFF;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--cream);
+    margin: 0;
+    padding: 0;
+    color: var(--dark-burgundy);
+}
+
+.header {
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(109, 46, 70, 0.1);
+    padding: 20px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--deep-burgundy);
+    margin: 0;
+}
+
+.nav-links a {
+    color: var(--dark-burgundy);
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--light-burgundy);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--deep-burgundy);
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.page-title:after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background-color: var(--golden);
+    margin: 15px auto;
+}
+
+.cart-section {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .cart-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dishes-list, .tables-container {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(109, 46, 70, 0.05);
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--deep-burgundy);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.dish-card {
+    display: flex;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(162, 103, 105, 0.2);
+    position: relative;
+}
+
+.dish-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.dish-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.dish-details {
+    flex: 1;
+}
+
+.dish-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    color: var(--dark-burgundy);
+}
+
+.dish-description {
+    font-weight: 300;
+    font-size: 0.9rem;
+    margin: 0 0 10px 0;
+    color: var(--light-burgundy);
+}
+
+.dish-price {
+    font-weight: 500;
+    color: var(--deep-burgundy);
+    margin: 0;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--cream);
+    border: none;
+    color: var(--deep-burgundy);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: var(--light-burgundy);
+    color: var(--white);
+}
+
+.quantity {
+    margin: 0 15px;
+    font-weight: 500;
+}
+
+/* Стиль для кнопки закрытия (крестика) */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--cream);
+    border: none;
+    color: var(--deep-burgundy);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: var(--light-burgundy);
+    color: var(--white);
+}
+
+/* Стили для карточек столов */
+.tables-container {
+    margin-top: 30px;
+}
+
+.tables-horizontal {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.table-card-horizontal {
+    min-width: 250px;
+    background-color: var(--cream);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(109, 46, 70, 0.1);
+    position: relative;
+}
+
+.table-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin: 0 0 15px 0;
+    color: var(--dark-burgundy);
+}
+
+.table-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.table-date, .table-time {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.table-date i, .table-time i {
+    color: var(--golden);
+    margin-right: 8px;
+    font-size: 0.9rem;
+}
+
+.summary-section {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(109, 46, 70, 0.05);
+    position: sticky;
+    top: 100px;
+    align-self: start;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 90%;
+    padding: 12px 15px;
+    border: 1px solid rgba(162, 103, 105, 0.3);
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--light-burgundy);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(162, 103, 105, 0.2);
+}
+
+.total-summary {
+    border-top: 1px solid rgba(162, 103, 105, 0.2);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.grand-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--deep-burgundy);
+}
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: var(--deep-burgundy);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-burgundy);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(109, 46, 70, 0.3);
+}
+
+/* Стили для скроллбара */
+.tables-horizontal::-webkit-scrollbar {
+    height: 6px;
+}
+
+.tables-horizontal::-webkit-scrollbar-track {
+    background: var(--cream);
+    border-radius: 3px;
+}
+
+.tables-horizontal::-webkit-scrollbar-thumb {
+    background-color: var(--light-burgundy);
+    border-radius: 3px;
+}
+
+/* Modal styles */
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(109, 46, 70, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(74, 28, 43, 0.3);
+    animation: modalFadeIn 0.4s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.success-icon {
+    color: #4CAF50;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--deep-burgundy);
+    margin: 0 0 15px 0;
+}
+
+.modal-message {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.modal-btn-primary {
+    background-color: var(--deep-burgundy);
+    color: var(--white);
+}
+
+.modal-btn-primary:hover {
+    background-color: var(--dark-burgundy);
+    transform: translateY(-2px);
+}
+
+/* Стили для карточки ресторана */
+.restaurant-card {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 15px rgba(109, 46, 70, 0.05);
+    display: flex;
+    align-items: center;
+}
+
+.restaurant-info {
+    flex: 1;
+}
+
+.restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--deep-burgundy);
+    margin: 0 0 15px 0;
+}
+
+.restaurant-location {
+    display: flex;
+    align-items: center;
+    color: var(--light-burgundy);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.restaurant-location i {
+    margin-right: 8px;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Все пользователи</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/profile/all-profiles.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="nav-buttons">
+                <a th:href="@{/winedise}" class="nav-btn nav-btn-outline">Главная</a>
+                <a th:href="@{/order}" class="nav-btn nav-btn-outline">Заказ</a>
+                <a th:href="@{/profile}" class="nav-btn nav-btn-outline">Профиль</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="profile-banner">
+    <div class="container">
+        <h1>Все пользователи</h1>
+    </div>
+</section>
+
+<div class="container">
+
+    <div class="users-section">
+        <h2 class="section-title">Список пользователей</h2>
+
+        <div class="users-list">
+            <!-- Карточка пользователя -->
+            <div class="user-card" th:each="user : ${users}">
+                <div class="user-header">
+                    <img th:src="${user.photo}" alt="Фото пользователя" class="user-photo">
+                    <div>
+                        <div class="user-name" th:text="${user.lastName + ' ' + user.firstName}">Иванов Иван</div>
+                        <span class="user-role" th:classappend="${user.role == 'admin'} ? 'role-admin' : 'role-user'"
+                              th:text="${user.role == 'admin'} ? 'Администратор' : 'Пользователь'">
+                            Пользователь
+                        </span>
+                    </div>
+                </div>
+
+                <div class="user-details">
+                    <div class="user-detail">
+                        <div class="user-detail-label">Телефон</div>
+                        <div class="user-detail-value" th:text="${user.phoneNumber}">+7 (123) 456-78-90</div>
+                    </div>
+
+                    <div class="user-detail">
+                        <div class="user-detail-label">Email</div>
+                        <div class="user-detail-value" th:text="${user.email}">mail@example.com</div>
+                    </div>
+
+                    <div class="user-detail">
+                        <div class="user-detail-label">Заказов</div>
+                        <div class="user-detail-value" th:text="${#sets.size(user.orders)}">5</div>
+                    </div>
+                </div>
+
+                <div class="user-actions">
+                    <form th:method="PATCH" th:action="@{/profile/make-admin/{id}(id=${user.id})}" th:if="${user.role != 'admin'}">
+                        <button type="submit" class="make-admin-btn">Сделать администратором</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a th:href="@{/profile}">
+            <button class="btn btn-filled">Вернуться в профиль</button>
+        </a>
+    </div>
+</div>
+
+<footer>
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</body>
+</html>

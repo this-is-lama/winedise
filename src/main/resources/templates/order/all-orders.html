@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WineDise - Все заказы</title>
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/order/all-orders.css">
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">WineDise</div>
+            <div class="nav-buttons">
+                <a th:href="@{/winedise}" class="nav-btn nav-btn-outline">Главная</a>
+                <a th:href="@{/order}" class="nav-btn nav-btn-outline">Заказ</a>
+                <a th:href="@{/profile}" class="nav-btn nav-btn-outline">Профиль</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="admin-banner">
+    <div class="container">
+        <h1>Все заказы</h1>
+    </div>
+</section>
+
+<div class="container">
+    <div class="orders-section">
+        <h2 class="section-title">Список бронирований</h2>
+
+        <div class="orders-list" th:if="${not #lists.isEmpty(allOrders)}">
+            <!-- Карточка заказа -->
+            <div class="order-card" th:each="order : ${allOrders}">
+                <div class="order-header">
+                    <div>
+                        <span class="order-number" th:text="'Бронирование #' + ${order.id}">Бронирование #номер</span>
+                    </div>
+                    <div class="order-date"
+                         th:text="${order.date + ', ' + order.reservationStart}">
+                        15 октября 2023, 19:00
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${order.user.lastName} + ' ' + ${order.user.firstName} + ' (' + ${order.user.phoneNumber} + ')'">
+                        Иванов Иван (+7 123 456-78-90)
+                    </span>
+                </div>
+
+                <div class="restaurant-info">
+                    <i class="fas fa-utensils"></i>
+                    <span th:text="${order.restaurant.name}">Название ресторана</span>
+                </div>
+
+                <div class="order-content">
+                    <div class="order-details">
+                        <div class="order-detail">
+                            <div class="order-detail-title">Количество гостей</div>
+                            <div class="order-detail-value" th:text="${order.peopleCount}">2</div>
+                        </div>
+
+                        <div class="order-detail">
+                            <div class="order-detail-title">Время</div>
+                            <div class="order-detail-value"
+                                 th:text="${order.reservationStart} + ' - ' + ${order.reservationEnd}">
+                                19:00 - 22:00
+                            </div>
+                        </div>
+
+                        <div class="order-detail" th:if="${order.specialRequests}">
+                            <div class="order-detail-title">Особые пожелания</div>
+                            <div class="order-detail-value" th:text="${order.specialRequests}">Дополнительные пожелания</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-total" th:text="'Общая сумма: ' + ${order.totalAmount} + ' ₽'">
+                    Общая сумма: ₽
+                </div>
+
+                <!-- Кнопка отмены для администратора -->
+                <form th:method="DELETE" th:action="@{/order/delete/{id}/from-all(id=${order.id})}">
+                    <button type="submit" class="cancel-btn">Отменить бронь</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="no-orders" th:unless="${not #lists.isEmpty(allOrders)}">
+            <p>Нет заказов</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</body>
+</html>
